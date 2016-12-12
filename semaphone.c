@@ -9,12 +9,15 @@
 #include <sys/shm.h>
 
 //char *story weird string address
+
+/*
 union semun{
   int val; 
   struct seld_ds* bus;
   unsigned short *array;
   struct seminfo *__buf;
 };
+*/
 
 int main(int argc, char *argv[] ) {
   int semid;
@@ -40,19 +43,31 @@ int main(int argc, char *argv[] ) {
     sc = semctl(semid, 0, GETVAL);
     printf("semaphore value: %d\n", sc);
     //read story
-    fd = open("story",O_RDONLY, 0644);
-    char *story;
-    read(fd,story,100);
+    fd = open("story", O_RDONLY);
+    int fsize = lseek(fd, 0, SEEK_END);
+    lseek(fd,-1 * fsize, SEEK_CUR);
+    char buffer[fsize];
+    read(fd, buffer, fsize);   
+    
+    //fd = open("story",O_RDONLY, 0644);
+    //char *story;
+    //read(fd,story,100);
     close(fd);
-    printf("Story:\n %s\n", story);
+    printf("Story:\n %s\n", buffer);
   }
   else if(strncmp(argv[1], "-r", strlen(argv[1])) == 0) {
     //Printing Story
-    fd = open("story",O_RDONLY, 0644);
-    char *story;
-    read(fd,story,100);
+    fd = open("semaphone.ring", O_RDONLY);
+    int fsize = lseek(fd, 0, SEEK_END);
+    lseek(fd,-1 * fsize, SEEK_CUR);
+    char buffer[fsize];
+    read(fd, buffer, fsize);
+
+    //fd = open("story",O_RDONLY, 0644);
+    //char *story;
+    //read(fd,story,100);
     close(fd);
-    printf("Story:\n %s\n", story);
+    printf("Story:\n %s\n", buffer);
     //Removing Semaphore
     semid = semget(key, 1, 0);
     sc = semctl(semid, 0, IPC_RMID);

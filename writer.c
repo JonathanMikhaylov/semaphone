@@ -18,7 +18,7 @@ int main() {
     semop(semid, &sb, 1);
     printf("[%d] I'm in!\n", getpid());
 
-    sleep(x);
+    //sleep(x);
 
     sb.sem_op = 1;
     semop(semid, &sb, 1);
