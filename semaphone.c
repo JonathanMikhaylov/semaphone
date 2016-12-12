@@ -10,14 +10,14 @@
 
 //char *story weird string address
 
-/*
+
 union semun{
   int val; 
   struct seld_ds* bus;
   unsigned short *array;
   struct seminfo *__buf;
 };
-*/
+
 
 int main(int argc, char *argv[] ) {
   int semid;
@@ -57,7 +57,7 @@ int main(int argc, char *argv[] ) {
   }
   else if(strncmp(argv[1], "-r", strlen(argv[1])) == 0) {
     //Printing Story
-    fd = open("semaphone.ring", O_RDONLY);
+    fd = open("story", O_RDONLY);
     int fsize = lseek(fd, 0, SEEK_END);
     lseek(fd,-1 * fsize, SEEK_CUR);
     char buffer[fsize];
